@@ -1,8 +1,8 @@
 {
-  "name": "itcast-store",
+  "name": "itcast_store48",
   "version": "1.0.0",
   "description": "A Vue.js project",
-  "author": "songke <1154285845@qq.com>",
+  "author": "goddlts <54337467@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js --open",
@@ -12,6 +12,8 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "element-ui": "^2.4.5",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
