@@ -9,7 +9,7 @@
           <div class="dianshang">电商后台管理系统</div>
         </div></el-col>
         <el-col :span="1">
-          <div class="tuichu"><a href="#">退出</a></div>
+          <div class="tuichu"><a href="#" @click.prevent="handleLogout">退出</a></div>
         </el-col>
       </el-row>
     </el-header>
@@ -28,7 +28,10 @@
                 <span>用户管理</span>
               </template>
               <el-menu-item-group>
-                <el-menu-item index="/users">用户列表</el-menu-item>
+                <el-menu-item index="/users">
+                  <i class="el-icon-menu"></i>
+                  用户列表
+                </el-menu-item>
                 </el-menu-item-group>
               </el-submenu>
               <el-submenu index="2">
@@ -110,6 +113,13 @@ export default {
     if(!token){
       this.$message.warning('请先登录');
       this.router.push('login');
+    }
+  },
+  methods: {
+    handleLogout() {
+      this.$message.success('退出成功');
+      sessionStorage.clear();
+      this.$router.push('/login');
     }
   }
 }
