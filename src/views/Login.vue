@@ -30,7 +30,11 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
+/* scoped 是html5中提供的属性
+   会给当前页面所有的标签，添加一个data-v-xxx的一个属性作为标示
+  当前页面的样式只为当前页面的元素服务
+*/
   .login-wrap {
     background-color: #324152;
     height: 100%;
