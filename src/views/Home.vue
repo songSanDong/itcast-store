@@ -104,7 +104,14 @@
 </template>
 <script>
 export default {
-
+  beforeCreate() {
+    var token = sessionStorage.getItem('token');
+    //判断是否带有token
+    if(!token){
+      this.$message.warning('请先登录');
+      this.router.push('login');
+    }
+  }
 }
 </script>
 <style>
