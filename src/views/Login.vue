@@ -13,12 +13,13 @@
         <el-input type="password" v-model="formData.password"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button class="btn" type="primary">登录</el-button>
+        <el-button @click="handleLogin" class="btn" type="primary">登录</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
+import axios from 'axios';
 export default {
   data(){
     return {
@@ -26,6 +27,31 @@ export default {
         username: '',
         password: ''
       }
+    }
+  },
+  methods: {
+    handleLogin() {
+      axios
+        .post('http://localhost:8888/api/private/v1/login',this.formData)
+        .then((response)=>{
+          console.log(response);
+          // { data: ,status: 200, headers: {}..... }
+          // response.data 的样子,服务器返回的数据
+          // { data: , meta: { msg:'', status: 200 } }
+          var status = response.data.meta.status;
+          var msg = response.data.meta.msg;
+          if(status == 200){
+            //登陆成功提示
+            this.$message.success(msg);
+            var token = response.data.data.token;
+            sessionStorage.setItem('token',token);
+          } else {
+            this.$message.error(msg);
+          }
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
     }
   }
 }
