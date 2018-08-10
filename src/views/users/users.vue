@@ -82,6 +82,7 @@
               plain>
             </el-button>
             <el-button
+              @click="handleDelete(scope.row)"
               type="danger"
               icon="el-icon-delete"
               size="mini"
@@ -263,6 +264,7 @@ export default {
         }
       })
     },
+    // 对话框提示信息
     openEditDialog (user) {
       this.editUserDialogFormVisible = true;
       this.form.username = user.username;
@@ -289,11 +291,30 @@ export default {
         this.$message.error(msg);
       }
     },
+    // close 事件处理
     handleEditDialogClose () {
       console.log(123);
       for (var key in this.form) {
         this.form[key] = '';
       }
+    },
+    // 删除操作
+    handleDelete () {
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   }
 };
