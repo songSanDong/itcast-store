@@ -21,23 +21,23 @@
 <script>
 import axios from 'axios';
 export default {
-  data(){
+  data () {
     return {
       formData: {
         username: '',
         password: ''
       }
-    }
+    };
   },
   methods: {
     async handleLogin() {
-      var response = await axios.post('http://localhost:8888/api/private/v1/login',this.formData);
+      var response = await axios.post('http://localhost:8888/api/private/v1/login', this.formData);
       var { data: { meta: { status, msg } } } = response;
-      if(status == 200){
-        //登陆成功提示
+      if (status === 200) {
+        // 登陆成功提示
         this.$message.success(msg);
         var token = response.data.data.token;
-        sessionStorage.setItem('token',token);
+        sessionStorage.setItem('token', token);
         // 跳转到后台首页
         this.$router.push('/');
       } else {

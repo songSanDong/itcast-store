@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '@/views/Login';
-import Home from '@/views/Home';
-import Users from '@/views/Users/Users';
-//配置路由规则
-Vue.use(Router)
+import Login from '../views/Login.vue';
+import Home from '../views/Home.vue';
+import Users from '../views/users/users.vue';
+// 配置路由规则
+Vue.use(Router);
 
 export default new Router({
   routes: [
@@ -14,7 +14,7 @@ export default new Router({
       path: '/',
       component: Home,
       children: [
-        { name: 'Users', path: 'users', component: Users }
+        { name: 'users', path: '/users', component: Users }
       ]
     }
   ]

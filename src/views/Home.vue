@@ -111,8 +111,8 @@
 export default {
   beforeCreate() {
     var token = sessionStorage.getItem('token');
-    //判断是否带有token
-    if(!token){
+    // 判断是否带有token
+    if (!token) {
       this.$message.warning('请先登录');
       this.router.push('login');
     }
@@ -124,7 +124,7 @@ export default {
       this.$router.push('/login');
     }
   }
-}
+};
 </script>
 <style>
   .container {
@@ -151,6 +151,7 @@ export default {
   }
   .main {
     background-color: #e9eef3;
+    padding: 0 20px;
   }
   .hellowYan {
     width: 100%;
