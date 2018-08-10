@@ -90,6 +90,7 @@
               plain>
             </el-button>
             <el-button
+              @click="setRoleDialogFormVisible = true"
               type="success"
               icon="el-icon-check"
               size="mini"
@@ -168,6 +169,28 @@
           <el-button type="primary" @click="handleEdit">确 定</el-button>
         </div>
       </el-dialog>
+      <!-- 分配角色的对话框 -->
+      <el-dialog
+        title="分配角色"
+        :visible.sync="setRoleDialogFormVisible">
+        <el-form
+          label-width="100px">
+          <el-form-item label="用户名">
+            {{ currentName }}
+          </el-form-item>
+          <el-form-item label="请选择角色">
+            <el-select v-model="currentRoleId">
+              <el-option label="请选择" :value="-1" disabled></el-option>
+              <el-option label="区域一" value="shanghai"></el-option>
+              <el-option label="区域二" value="beijing"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="setRoleDialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="setRoleDialogFormVisible = false">确 定</el-button>
+        </div>
+      </el-dialog>
     </el-card>
 </template>
 <script>
@@ -203,7 +226,13 @@ export default {
         ]
       },
       // 控制编辑用户的对话框的显示隐藏
-      editUserDialogFormVisible: false
+      editUserDialogFormVisible: false,
+      // 控制分配角色的对话框的显示隐藏
+      setRoleDialogFormVisible: false,
+      // 分配角色需要的数据
+      currentName: '',
+      // 绑定下拉框
+      currentRoleId: -1
     };
   },
   created() {
