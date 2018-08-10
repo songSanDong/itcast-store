@@ -90,7 +90,7 @@
               plain>
             </el-button>
             <el-button
-              @click="setRoleDialogFormVisible = true"
+              @click="handleOpenSetRoleDialog(scope.row)"
               type="success"
               icon="el-icon-check"
               size="mini"
@@ -181,8 +181,11 @@
           <el-form-item label="请选择角色">
             <el-select v-model="currentRoleId">
               <el-option label="请选择" :value="-1" disabled></el-option>
-              <el-option label="区域一" value="shanghai"></el-option>
-              <el-option label="区域二" value="beijing"></el-option>
+              <el-option
+                v-for="item in roles"
+                :key="item.id"
+                :label="item.roleName"
+                :value="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-form>
@@ -232,7 +235,10 @@ export default {
       // 分配角色需要的数据
       currentName: '',
       // 绑定下拉框
-      currentRoleId: -1
+      currentRoleId: -1,
+      currentUserId: -1,
+      // 角色列表
+      roles: []
     };
   },
   created() {
@@ -366,6 +372,13 @@ export default {
         this.$message.error(msg);
         console.log(2)
       }
+    },
+    async handleOpenSetRoleDialog (user) {
+      this.setRoleDialogFormVisible = true;
+      this.currentName = user.username;
+      this.currentUserId = user.id;
+      const response = await this.$http.get('roles');
+      this.roles = response.data.data;
     }
   }
 };
