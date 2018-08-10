@@ -14,15 +14,15 @@
           <el-input placeholder="请输入内容" class="searchInput">
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
-          <el-button type="success" plain>成功按钮</el-button>
+          <el-button type="success" plain>添加用户</el-button>
         </el-col>
       </el-row>
       <!-- 表格 -->
       <el-table
-      border
-      stripe
-      :data="data"
-      style="width:100">
+        border
+        stripe
+        :data="data"
+        style="width:100">
         <el-table-column
           type="index"
           width="50">
@@ -88,13 +88,39 @@
           </template>
         </el-table-column>
       </el-table>
+      <!-- 分页 -->
+      <!--
+        current-page 当前页码
+        page-size 每页显示多少条数据
+        pager-count 最多产生的数字按钮个数,大于等于 5 且小于等于 21 的奇数
+        total   总共多少条数据，发送请求获取
+         @size-change  每页显示多少条改变的时候
+        @current-change 当前页码改变的时候
+      -->
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="pagenum"
+        :page-sizes="[2, 4, 6, 8]"
+        :page-size="pagesize"
+        :pager-count="9"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="count">
+      </el-pagination>
     </el-card>
 </template>
 <script>
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      // 分页相关数据
+      // 页码
+      pagenum: 1,
+      // 每页显示多少条数据
+      pagesize: 2,
+      // 总共多少条数据
+      count: 0
     };
   },
   created() {
@@ -104,19 +130,32 @@ export default {
     async loadData () {
       var token = sessionStorage.getItem('token');
       this.$http.defaults.headers.common['Authorization'] = token;
-      var response = await this.$http.get('users?pagenum=1&pagesize=10');
+      var response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
       var { meta: {status, msg} } = response.data;
       // Vue.prototype.$http = axios; 在main.js中
       // this.$http.get()
+      console.log(response);
       if (status === 200) {
+        this.count = response.data.data.total;
         this.data = response.data.data.users;
       } else {
         this.$message.error(msg);
       }
+    },
+    // 分页的方法
+    handleSizeChange (val) {
+      // 每页条数发生变化
+      this.pagesize = val;
+      this.loadData();
+      console.log(`每页${val}条`);
+    },
+    handleCurrentChange (val) {
+      this.pagenum = val;
+      this.loadData();
+      console.log(`当前页码是${val}`);
     }
   }
 };
-console.log(this.data);
 </script>
 <style>
   .card {
