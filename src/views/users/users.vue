@@ -144,6 +144,7 @@
       </el-dialog>
       <!-- 编辑用户 -->
       <el-dialog
+        @close="handleEditDialogClose"
         title="编辑用户"
         :visible.sync="editUserDialogFormVisible">
         <el-form
@@ -286,6 +287,12 @@ export default {
         }
       } else {
         this.$message.error(msg);
+      }
+    },
+    handleEditDialogClose () {
+      console.log(123);
+      for (var key in this.form) {
+        this.form[key] = '';
       }
     }
   }
