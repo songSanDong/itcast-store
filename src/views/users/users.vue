@@ -46,6 +46,9 @@
           prop="create_time"
           label="时间"
           width="180">
+          <template slot-scope="scope">
+            {{ scope.row.create_time | fmtDate('YYYY-MM--DD') }}
+          </template>
         </el-table-column>
         <el-table-column
           prop="mg_state"
@@ -88,7 +91,6 @@
     </el-card>
 </template>
 <script>
-import axios from 'axios';
 export default {
   data() {
     return {
@@ -101,18 +103,19 @@ export default {
   methods: {
     async loadData () {
       var token = sessionStorage.getItem('token');
-      axios.defaults.headers.common['Authorization'] = token;
-      var response = await axios.get('http://localhost:8888/api/private/v1/users?pagenum=1&pagesize=10');
-      console.log(response)
+      this.$http.defaults.headers.common['Authorization'] = token;
+      var response = await this.$http.get('http://localhost:8888/api/private/v1/users?pagenum=1&pagesize=10');
       var { meta: {status, msg} } = response.data;
-      if(status === 200) {
+      // Vue.prototype.$http = axios; 在main.js中
+      // this.$http.get()
+      if (status === 200) {
         this.data = response.data.data.users;
       } else {
         this.$message.error(msg);
       }
     }
   }
-}
+};
 console.log(this.data);
 </script>
 <style>

@@ -19,7 +19,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios';
 export default {
   data () {
     return {
@@ -31,7 +30,7 @@ export default {
   },
   methods: {
     async handleLogin() {
-      var response = await axios.post('http://localhost:8888/api/private/v1/login', this.formData);
+      var response = await this.$http.post('http://localhost:8888/api/private/v1/login', this.formData);
       var { data: { meta: { status, msg } } } = response;
       if (status === 200) {
         // 登陆成功提示
