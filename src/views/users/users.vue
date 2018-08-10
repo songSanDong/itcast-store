@@ -119,13 +119,14 @@
         title="添加用户"
         :visible.sync="addUserDialogFormVisible">
         <el-form
+          :rules="rules"
           label-width="80px"
           :model="form">
-          <el-form-item label="用户名">
+          <el-form-item label="用户名" prop="username">
             <el-input v-model="form.username" auto-complete="off"></el-input>
           </el-form-item>
-          <el-form-item label="密码">
-            <el-input v-model="form.password" auto-complete="off"></el-input>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model="form.password" auto-complete="off"></el-input>
           </el-form-item>
           <el-form-item label="邮箱">
             <el-input v-model="form.email" auto-complete="off"></el-input>
@@ -161,6 +162,17 @@ export default {
         password: '',
         email: '',
         mobile: ''
+      },
+      // 表单验证规则
+      rules: {
+        username: [
+          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { min: 3, max: 6, message: '长度在 3 到 6 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '请输入密码', trigger: 'blur' },
+          { min: 3, max: 11, message: '长度在 3 到 11 个字符', trigger: 'blur' }
+        ]
       }
     };
   },
@@ -175,7 +187,7 @@ export default {
       var { meta: {status, msg} } = response.data;
       // Vue.prototype.$http = axios; 在main.js中
       // this.$http.get()
-      console.log(response);
+      // console.log(response);
       if (status === 200) {
         this.count = response.data.data.total;
         this.data = response.data.data.users;
