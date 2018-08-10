@@ -75,7 +75,7 @@
             <!-- scope.row 是当前行绑定的数据对象 -->
              <!-- {{ scope.$index }} -->
             <el-button
-              @click="editUserDialogFormVisible = true"
+              @click="openEditDialog(scope.row)"
               type="primary"
               icon="el-icon-edit"
               size="mini"
@@ -261,6 +261,12 @@ export default {
           }
         }
       })
+    },
+    openEditDialog (user) {
+      this.editUserDialogFormVisible = true;
+      this.form.username = user.username;
+      this.form.email = user.email;
+      this.form.mobile  = user.mobile ;
     },
     // 点击编辑窗口的确定按钮
     handleEdit () {
