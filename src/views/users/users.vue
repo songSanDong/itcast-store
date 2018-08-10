@@ -267,10 +267,26 @@ export default {
       this.form.username = user.username;
       this.form.email = user.email;
       this.form.mobile  = user.mobile ;
+      this.form.id = user.id;
     },
     // 点击编辑窗口的确定按钮
-    handleEdit () {
-
+    async handleEdit () {
+      const response = await this.$http.put(`users/${this.form.id}`, {
+        email: this.form.email,
+        mobile: this.form.mobile
+      });
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        this.editUserDialogFormVisible = false;
+        this.loadData();
+        // 清空表单
+        for (var key in this.form) {
+          this.form[key] = '';
+        }
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
