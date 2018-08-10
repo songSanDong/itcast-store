@@ -11,8 +11,15 @@
       <!-- 搜索 -->
       <el-row class="searchRow">
         <el-col :span="24">
-          <el-input placeholder="请输入内容" class="searchInput">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input
+            clearable
+            v-model="searchValue"
+            placeholder="请输入内容"
+            class="searchInput">
+            <el-button
+              slot="append"
+              @click="handleSearch"
+              icon="el-icon-search"></el-button>
           </el-input>
           <el-button type="success" plain>添加用户</el-button>
         </el-col>
@@ -120,7 +127,9 @@ export default {
       // 每页显示多少条数据
       pagesize: 2,
       // 总共多少条数据
-      count: 0
+      count: 0,
+      // 绑定文本输入框
+      searchValue: ''
     };
   },
   created() {
@@ -130,7 +139,7 @@ export default {
     async loadData () {
       var token = sessionStorage.getItem('token');
       this.$http.defaults.headers.common['Authorization'] = token;
-      var response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
+      var response = await this.$http.get(`users?pagenum=${this.pagenum}&pagesize=${this.pagesize}&query=${this.searchValue}`);
       var { meta: {status, msg} } = response.data;
       // Vue.prototype.$http = axios; 在main.js中
       // this.$http.get()
@@ -153,6 +162,9 @@ export default {
       this.pagenum = val;
       this.loadData();
       console.log(`当前页码是${val}`);
+    },
+    handleSearch () {
+      this.loadData();
     }
   }
 };
