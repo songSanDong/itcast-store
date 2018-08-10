@@ -63,6 +63,7 @@
           width="80">
           <template slot-scope="scope">
             <el-switch
+              @change="handleChange(scope.row)"
               v-model="scope.row.mg_state"
               active-color="#13ce66"
               inactive-color="#ff4949">
@@ -325,6 +326,17 @@ export default {
           message: '已取消删除'
         });
       });
+    },
+    async handleChange (user) {
+      const response = await this.$http.put(`users/${user.id}/state/${user.mg_state}`);
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        console.log(1)
+      } else {
+        this.$message.error(msg);
+        console.log(2)
+      }
     }
   }
 };
