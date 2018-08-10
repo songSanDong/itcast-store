@@ -82,7 +82,7 @@
               plain>
             </el-button>
             <el-button
-              @click="handleDelete(scope.row)"
+              @click="handleDelete(scope.row.id)"
               type="danger"
               icon="el-icon-delete"
               size="mini"
@@ -299,16 +299,26 @@ export default {
       }
     },
     // 删除操作
-    handleDelete () {
+    async handleDelete (id) {
+      console.log(id)
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
+      }).then(async () => {
+        const response = await this.$http.delete(`users/${id}`);
+        const { meta: { status, msg } } = response.data;
+        if(status === 200) {
+          // 判断当前页是否只有一条数据 并且当前页码是否是第一页
+          if (this.data.length === 1 && this.pagenum !== 1) {
+              this.pagenum--;
+              // 重新加载数据
+              this.loadData();
+            }
+          this.$message.success(msg)
+        } else {
+          this.$message.error(msg);
+        }
       }).catch(() => {
         this.$message({
           type: 'info',
