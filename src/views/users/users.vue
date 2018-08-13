@@ -191,7 +191,7 @@
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button @click="setRoleDialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="setRoleDialogFormVisible = false">确 定</el-button>
+          <el-button type="primary" @click="handleSetRole">确 定</el-button>
         </div>
       </el-dialog>
     </el-card>
@@ -235,7 +235,9 @@ export default {
       // 分配角色需要的数据
       currentName: '',
       // 绑定下拉框
+      // 用户 id
       currentRoleId: -1,
+      // 角色 id
       currentUserId: -1,
       // 角色列表
       roles: []
@@ -346,8 +348,8 @@ export default {
         if (status === 200) {
           // 判断当前页是否只有一条数据 并且当前页码是否是第一页
           if (this.data.length === 1 && this.pagenum !== 1) {
-              this.pagenum--;
-            };
+            this.pagenum--;
+          };
           this.loadData();
           this.$message.success(msg);
         } else {
@@ -376,6 +378,18 @@ export default {
       const response = await this.$http.get('roles');
       this.roles = response.data.data;
       console.log(response);
+    },
+    async handleSetRole () {
+      const response = await this.$http.put(`users/${this.currentUserId}/role`, {
+        rid: this.currentRoleId
+      });
+      const { meta: { status, msg } } = response.data;
+      if(status === 200) {
+        this.$message.success(msg);
+        // this.setRoleDialogFormVisible = false;
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
