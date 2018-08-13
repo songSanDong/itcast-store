@@ -15,7 +15,7 @@ import moment from 'moment';
 // 引入 axios 发送异步请求
 import axios from 'axios';
 // 注册 vue 插件
-import myaxios  from './plugins/MyAxios.js';
+import myaxios from './plugins/MyAxios.js';
 
 Vue.config.productionTip = false;
 // 注册插件

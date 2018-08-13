@@ -114,7 +114,7 @@
         :current-page="pagenum"
         :page-sizes="[2, 4, 6, 8]"
         :page-size="pagesize"
-        :pager-count="9"
+        :pager-count="7"
         layout="total, sizes, prev, pager, next, jumper"
         :total="count">
       </el-pagination>
@@ -205,7 +205,7 @@ export default {
       // 页码
       pagenum: 1,
       // 每页显示多少条数据
-      pagesize: 2,
+      pagesize: 10,
       // 总共多少条数据
       count: 0,
       // 绑定文本输入框
@@ -298,14 +298,14 @@ export default {
             this.$message.warning('表单验证失败');
           }
         }
-      })
+      });
     },
     // 对话框提示信息
     openEditDialog (user) {
       this.editUserDialogFormVisible = true;
       this.form.username = user.username;
       this.form.email = user.email;
-      this.form.mobile  = user.mobile ;
+      this.form.mobile = user.mobile;
       this.form.id = user.id;
     },
     // 点击编辑窗口的确定按钮
@@ -336,7 +336,6 @@ export default {
     },
     // 删除操作
     async handleDelete (id) {
-      console.log(id)
       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -344,14 +343,13 @@ export default {
       }).then(async () => {
         const response = await this.$http.delete(`users/${id}`);
         const { meta: { status, msg } } = response.data;
-        if(status === 200) {
+        if (status === 200) {
           // 判断当前页是否只有一条数据 并且当前页码是否是第一页
           if (this.data.length === 1 && this.pagenum !== 1) {
               this.pagenum--;
-              // 重新加载数据
-              this.loadData();
-            }
-          this.$message.success(msg)
+            };
+          this.loadData();
+          this.$message.success(msg);
         } else {
           this.$message.error(msg);
         }
@@ -367,10 +365,8 @@ export default {
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.$message.success(msg);
-        console.log(1)
       } else {
         this.$message.error(msg);
-        console.log(2)
       }
     },
     async handleOpenSetRoleDialog (user) {
@@ -379,6 +375,7 @@ export default {
       this.currentUserId = user.id;
       const response = await this.$http.get('roles');
       this.roles = response.data.data;
+      console.log(response);
     }
   }
 };
