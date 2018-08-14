@@ -39,7 +39,8 @@
 export default {
   data () {
     return {
-      data: []
+      data: [],
+      loading: true
     };
   },
   created () {
@@ -49,6 +50,7 @@ export default {
   methods: {
     async loadData () {
       var token = sessionStorage.getItem('token');
+      this.loading = false;
       this.$http.defaults.headers.common['Authorization'] = token;
       const response = await this.$http.get('rights/list');
       const { meta: { status, msg } } = response.data;

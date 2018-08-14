@@ -6,6 +6,7 @@
     </el-row>
     <el-table
       :data="data"
+      v-loading="loading"
       stripe
       border
       style="width: 100%">
@@ -53,7 +54,8 @@
 export default {
   data() {
     return {
-      data: []
+      data: [],
+      loading: true
     }
   },
   created () {
@@ -62,6 +64,7 @@ export default {
   methods: {
     async loadData () {
       const response = await this.$http.get('roles');
+      this.loading = false;
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.data = response.data.data;
