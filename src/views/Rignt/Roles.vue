@@ -20,6 +20,7 @@
               <el-col :span="4">
                 <!-- 显示一级权限的名称 -->
                 <el-tag
+                  @close="handleClose(scope.row, level1.id)"
                   closable>
                   {{ level1.authName }}
                 </el-tag>
@@ -33,6 +34,7 @@
                     <!-- 显示二级权限的名称 -->
                     <el-tag
                       type="success"
+                      @close="handleClose(scope.row, level2.id)"
                       closable>
                       {{ level2.authName }}
                     </el-tag>
@@ -44,6 +46,7 @@
                     v-for="level3 in level2.children"
                     :key="level3.id"
                     closable
+                    @close="handleClose(scope.row, level3.id)"
                     type="warning">
                     {{ level3.authName }}
                   </el-tag>
@@ -102,10 +105,10 @@ export default {
     return {
       data: [],
       loading: true
-    }
+    };
   },
   created () {
-    this.loadData()
+    this.loadData();
   },
   methods: {
     async loadData () {
@@ -117,6 +120,24 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    // 点击 tag的删除按钮，删除当前角色对应的权限
+    async handleClose(role, rightId) {
+      // role 角色对象
+      // roleId 角色id
+      // rightId 权限id
+      const response = await this.$http.delete(`roles/${role.id}/rights/${rightId}`);
+      console.log(response);
+      console.log(response.data);
+      // 判断是否成功
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        // 重新加载数据
+        role.children = response.data.data;
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
@@ -124,6 +145,7 @@ export default {
 <style>
  .card {
   height: 100%;
+  overflow: auto;
  }
  .anniu {
   margin: 10px 0;
