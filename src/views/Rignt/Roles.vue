@@ -14,6 +14,7 @@
       <el-table-column type="expand">
         <template slot-scope="scope">
           <el-row
+          class="level1"
             v-for="level1 in scope.row.children"
             :key="level1.id">
               <el-col :span="4">
@@ -23,7 +24,32 @@
                   {{ level1.authName }}
                 </el-tag>
               </el-col>
-            <el-col :span="20"></el-col>
+              <el-col :span="20">
+              <!-- 二级权限 -->
+              <el-row
+                v-for="level2 in level1.children"
+                :key="level2.id">
+                  <el-col :span="4">
+                    <!-- 显示二级权限的名称 -->
+                    <el-tag
+                      type="success"
+                      closable>
+                      {{ level2.authName }}
+                    </el-tag>
+                  </el-col>
+                  <el-col :span="20">
+                  <!-- 三级权限 -->
+                  <el-tag
+                    class="level3"
+                    v-for="level3 in level2.children"
+                    :key="level3.id"
+                    closable
+                    type="warning">
+                    {{ level3.authName }}
+                  </el-tag>
+                </el-col>
+              </el-row>
+            </el-col>
           </el-row>
         </template>
       </el-table-column>
@@ -99,4 +125,11 @@ export default {
  .anniu {
   margin: 10px 0;
  }
+ .level3 {
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.level1 {
+  margin-bottom: 10px;
+}
 </style>
