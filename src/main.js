@@ -16,6 +16,8 @@ import moment from 'moment';
 import axios from 'axios';
 // 注册 vue 插件
 import myaxios from './plugins/MyAxios.js';
+// 配置面包屑自定义组件
+import MyBreadcrumb from './components/MyBreadcrumb.vue';
 
 Vue.config.productionTip = false;
 // 注册插件
@@ -27,6 +29,8 @@ Vue.use(myaxios);
 Vue.filter('fmtDate', (value, fmtString) => {
   return moment(value).format(fmtString);
 });
+// 注册全局面包屑组件
+Vue.component(MyBreadcrumb.name, MyBreadcrumb);
 new Vue({
   el: '#app',
   router,
