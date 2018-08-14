@@ -10,6 +10,12 @@
       stripe
       border
       style="width: 100%">
+      <!-- 展开行 -->
+      <el-table-column type="expand">
+        <template slot-scope="scope">
+          展开行
+        </template>
+      </el-table-column>
       <el-table-column
         type="index"
         width="50">
