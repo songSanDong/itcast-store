@@ -5,6 +5,8 @@ import Home from '../views/Home.vue';
 import Users from '../views/users/users.vue';
 import Rights from '../views/Rignt/rights.vue';
 import Roles from '../views/Rignt/Roles.vue';
+// 导入message
+import { Message } from 'element-ui';
 // 配置路由规则
 Vue.use(Router);
 const router = new Router({
@@ -35,6 +37,7 @@ router.beforeEach((to, from, next) => {
     if(!token) {
       // 如果 token 不存在
       router.push('/login');
+      Message.warning('请先登录');
       return;
     }
   }

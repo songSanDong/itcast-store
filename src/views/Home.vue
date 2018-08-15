@@ -20,8 +20,7 @@
           <el-menu
             unique-opened
             router
-            style="height: 100%"
-            default-active="/users">
+            style="height: 100%">
             <el-submenu
               v-for="item in menus"
               :key="item.id"
