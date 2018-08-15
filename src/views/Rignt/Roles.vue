@@ -180,9 +180,9 @@ export default {
         level1.children.forEach((level2) => {
           level2.children.forEach((level3) => {
             this.checkedList.push(level3.id);
-          })
-        })
-      })
+          });
+        });
+      });
     },
     async handleSetRights () {
       // currentRoleId 角色id  -- 点击分配权限按钮记录
