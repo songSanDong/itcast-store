@@ -89,7 +89,7 @@
             plain>
           </el-button>
           <el-button
-            @click="setRightsDialogVisible = true"
+            @click="handleOpenSetRightsDialog(scope.row)"
             type="success"
             icon="el-icon-check"
             size="mini"
@@ -102,15 +102,18 @@
       title="权限设置"
       :visible.sync="setRightsDialogVisible">
       <el-tree
+        ref="tree"
         show-checkbox
         default-expand-all
         :data="treeData"
+        node-key="id"
+        :default-checked-keys="checkedList"
         :props="defaultProps">
 
       </el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightsDialogVisible  = false">取 消</el-button>
-        <el-button type="primary" @click="setRightsDialogVisible  = false">确 定</el-button>
+        <el-button type="primary" @click="handleSetRights">确 定</el-button>
       </span>
     </el-dialog>
   </el-card>
@@ -126,7 +129,11 @@ export default {
       defaultProps: {
         label: 'authName',
         children: 'children'
-      }
+      },
+      // 树默认选中的
+      checkedList: [],
+      // 角色 id
+      currentRoleId: -1
     };
   },
   created () {
@@ -161,10 +168,43 @@ export default {
         this.$message.error(msg);
       }
     },
-    async handleOpenSetRightsDialog () {
-      setRightsDialogVisible = true;
+    async handleOpenSetRightsDialog (role) {
+      this.currentRoleId = role.id;
+      // 先清空数组不然上来默认都选中
+      this.checkedList = [];
+      // 点击弹出框
+      this.setRightsDialogVisible = true;
       const response = await this.$http.get('rights/tree');
       this.treeData = response.data.data;
+      role.children.forEach((level1) => {
+        level1.children.forEach((level2) => {
+          level2.children.forEach((level3) => {
+            this.checkedList.push(level3.id);
+          })
+        })
+      })
+    },
+    async handleSetRights () {
+      // currentRoleId 角色id  -- 点击分配权限按钮记录
+      // rids  权限id的列表
+      // 全选的节点的id (3,5,6,7)
+      const checkedList = this.$refs.tree.getCheckedKeys();
+      // 半选的
+      const halfCheckedList = this.$refs.tree.getHalfCheckedKeys();
+      // 拼接数组
+      const arr = [...checkedList, ...halfCheckedList];
+      const response = await this.$http.post(`roles/${this.currentRoleId}/rights`, {
+        rids: arr.join(',')
+      });
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        // 关闭弹框
+        this.setRightsDialogVisible = false;
+        this.loadData();
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
