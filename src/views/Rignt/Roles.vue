@@ -101,7 +101,13 @@
     <el-dialog
       title="权限设置"
       :visible.sync="setRightsDialogVisible">
-      <span>这是一段信息</span>
+      <el-tree
+        show-checkbox
+        default-expand-all
+        :data="treeData"
+        :props="defaultProps">
+
+      </el-tree>
       <span slot="footer" class="dialog-footer">
         <el-button @click="setRightsDialogVisible  = false">取 消</el-button>
         <el-button type="primary" @click="setRightsDialogVisible  = false">确 定</el-button>
@@ -115,7 +121,12 @@ export default {
     return {
       data: [],
       loading: true,
-      setRightsDialogVisible: false
+      setRightsDialogVisible: false,
+      treeData: [],
+      defaultProps: {
+        label: 'authName',
+        children: 'children'
+      }
     };
   },
   created () {
@@ -149,6 +160,11 @@ export default {
       } else {
         this.$message.error(msg);
       }
+    },
+    async handleOpenSetRightsDialog () {
+      setRightsDialogVisible = true;
+      const response = await this.$http.get('rights/tree');
+      this.treeData = response.data.data;
     }
   }
 };
