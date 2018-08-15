@@ -7,8 +7,7 @@ import Rights from '../views/Rignt/rights.vue';
 import Roles from '../views/Rignt/Roles.vue';
 // 配置路由规则
 Vue.use(Router);
-
-export default new Router({
+const router = new Router({
   routes: [
     { name: 'Login', path: '/login', component: Login },
     {
@@ -23,3 +22,22 @@ export default new Router({
     }
   ]
 });
+// 路由的全局前置守卫 （拦截器）  -- 路由跳转之前执行
+router.beforeEach((to, from, next) => {
+  // console.log(to);
+  // console.log(from);
+  // next();
+  // 如果是登录的时候不判断token ，不是登录才判断token
+  // console.log(to);
+  if(to.name && to.name.toLocaleLowerCase() !== 'login') {
+    // 判断 token
+    const token = sessionStorage.getItem('token');
+    if(!token) {
+      // 如果 token 不存在
+      router.push('/login');
+      return;
+    }
+  }
+  next();
+});
+export default router;
