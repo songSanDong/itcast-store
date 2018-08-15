@@ -10,12 +10,17 @@
       :data="data"
       border
       stripe
+      v-loading="loading"
       style="width: 100%">
-      <el-table-column
+      <el-table-tree-column
         prop="cat_name"
         label="分类名称"
-        width="180">
-      </el-table-column>
+        width="400"
+        treeKey="cat_id"
+        levelKey="cat_level"
+        childKey="children"
+        parentKey="cat_pid">
+      </el-table-tree-column>
       <el-table-column
         label="级别"
         width="180">
@@ -52,13 +57,31 @@
         </template>
       </el-table-column>
     </el-table>
+     <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[6, 8, 10, 12]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total">
+    </el-pagination>
   </el-card>
 </template>
 <script>
+import ElementTreegrid from 'element-tree-grid';
+
 export default {
+  components: {
+    'el-table-tree-column': ElementTreegrid
+  },
  data() {
     return {
-      data: []
+      data: [],
+      pagenum: 1,
+      pagesize: 6,
+      total: 0,
+      loading: true
     };
   },
   created () {
@@ -66,11 +89,14 @@ export default {
   },
   methods: {
     async loadData () {
-      const response = await this.$http.get('categories?type=3');
+      this.loading = true;
+      const response = await this.$http.get(`categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
+       this.loading = false;
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
+        this.total = response.data.data.total;
         this.$message.success(msg);
-        this.data = response.data.data;
+        this.data = response.data.data.result;
         console.log(this.data);
       } else {
         this.$message.error(msg);
