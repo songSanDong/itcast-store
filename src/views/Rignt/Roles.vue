@@ -89,6 +89,7 @@
             plain>
           </el-button>
           <el-button
+            @click="setRightsDialogVisible = true"
             type="success"
             icon="el-icon-check"
             size="mini"
@@ -97,6 +98,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog
+      title="权限设置"
+      :visible.sync="setRightsDialogVisible">
+      <span>这是一段信息</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="setRightsDialogVisible  = false">取 消</el-button>
+        <el-button type="primary" @click="setRightsDialogVisible  = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-card>
 </template>
 <script>
@@ -104,7 +114,8 @@ export default {
   data() {
     return {
       data: [],
-      loading: true
+      loading: true,
+      setRightsDialogVisible: false
     };
   },
   created () {
@@ -148,13 +159,13 @@ export default {
   overflow: auto;
  }
  .anniu {
-  margin: 10px 0;
- }
- .level3 {
-  margin-right: 15px;
-  margin-bottom: 15px;
-}
-.level1 {
-  margin-bottom: 10px;
-}
+    margin: 10px 0;
+   }
+   .level3 {
+    margin-right: 15px;
+    margin-bottom: 15px;
+  }
+  .level1 {
+    margin-bottom: 10px;
+  }
 </style>
