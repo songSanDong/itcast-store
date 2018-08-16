@@ -53,7 +53,7 @@ export default {
   data () {
     return {
       menus: []
-    }
+    };
   },
   created () {
     this.loadMenus();

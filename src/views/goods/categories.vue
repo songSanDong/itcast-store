@@ -125,7 +125,7 @@ export default {
   components: {
     'el-table-tree-column': ElementTreegrid
   },
- data() {
+  data() {
     return {
       data: [],
       pagenum: 1,
@@ -147,7 +147,8 @@ export default {
       catIds: [],
       editDialogFormVisible: false,
       // 编辑的时候记录分类的id
-      currentCatId: -1
+      currentCatId: -1,
+      'editDialogFormVisible': false
     };
   },
   created () {
@@ -163,18 +164,18 @@ export default {
     async loadData () {
       this.loading = true;
       const response = await this.$http.get(`categories?type=3&pagenum=${this.pagenum}&pagesize=${this.pagesize}`);
-       this.loading = false;
+      this.loading = false;
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.total = response.data.data.total;
         this.$message.success(msg);
         this.data = response.data.data.result;
-        console.log(this.data);
+        // console.log(this.data);
       } else {
         this.$message.error(msg);
       }
     },
-     // 分页的方法
+    // 分页的方法
     handleSize (val) {
       // 每页条数发生变化
       this.pagesize = val;
@@ -222,36 +223,34 @@ export default {
     },
     // 删除分类
     handleDelete (id) {
-      this.$confirm('是否要删除该分类?','提示', {
+      this.$confirm('是否要删除该分类 ?','提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(async () => {
         const response = await this.$http.delete(`categories/${id}`);
         const { meta: { status, msg } } = response.data;
-        if(status === 200) {
+        if (status === 200) {
           this.$message.success(msg);
           this.loadData();
         } else {
           this.$message.error(msg);
         }
-      }).catch(()=>{
+      }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消'
-        })
-      })
+        });
+      });
     },
     // 编辑分类
     // 点击编辑按钮的时候，弹出编辑对话框
     // 存储 分类的id，分类的名称
-    handleOpenEditDialog (cat) {
-      // cat 当前分类的对象
-      // console.log(cat.cat_name);
-      // console.log(this.form.cat_name);
+    handleOpenEditDialog(cat) {
+      // cat 是当前行对应的分类对象
       this.form.cat_name = cat.cat_name;
-      // console.log(this.form.cat_name);
       this.currentCatId = cat.cat_id;
+      // 打开对话框
       this.editDialogFormVisible = true;
     },
     // 编辑对话框中的确定按钮
@@ -259,7 +258,7 @@ export default {
       const response = await this.$http.put(`categories/${this.currentCatId}`, {
         cat_name: this.form.cat_name
       });
-       // 判断修改是否成功
+      // 判断修改是否成功
       const { meta: { status, msg } } = response.data;
       if (status === 200) {
         this.$message.success(msg);

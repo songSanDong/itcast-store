@@ -33,10 +33,10 @@ router.beforeEach((to, from, next) => {
   // next();
   // 如果是登录的时候不判断token ，不是登录才判断token
   // console.log(to);
-  if(to.name && to.name.toLocaleLowerCase() !== 'login') {
+  if (to.name && to.name.toLocaleLowerCase() !== 'login') {
     // 判断 token
     const token = sessionStorage.getItem('token');
-    if(!token) {
+    if (!token) {
       // 如果 token 不存在
       router.push('/login');
       Message.warning('请先登录');
