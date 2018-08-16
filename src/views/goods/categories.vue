@@ -41,7 +41,7 @@
         label="操作">
         <template slot-scope="scope">
           <el-button
-            @click="openEditDialog(scope.row)"
+            @click="handleOpenEditDialog(scope.row)"
             type="primary"
             icon="el-icon-edit"
             size="mini"
@@ -100,6 +100,22 @@
         <el-button type="primary" @click="handleAdd">确 定</el-button>
       </div>
     </el-dialog>
+    <!-- 编辑按钮 -->
+    <el-dialog
+      title="修改商品分类"
+      :visible.sync="editDialogFormVisible">
+       <el-form
+        :model="form"
+        label-width="100px">
+        <el-form-item label="分类名称">
+          <el-input v-model="form.cat_name" auto-complete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-card>
 </template>
 <script>
@@ -128,7 +144,10 @@ export default {
         label: 'cat_name',
         children: 'children'
       },
-      catIds: []
+      catIds: [],
+      editDialogFormVisible: false,
+      // 编辑的时候记录分类的id
+      currentCatId: -1
     };
   },
   created () {
@@ -201,6 +220,7 @@ export default {
         this.$message.error(msg);
       }
     },
+    // 删除分类
     handleDelete (id) {
       this.$confirm('是否要删除该分类?','提示', {
         confirmButtonText: '确定',
@@ -221,6 +241,33 @@ export default {
           message: '已取消'
         })
       })
+    },
+    // 编辑分类
+    // 点击编辑按钮的时候，弹出编辑对话框
+    // 存储 分类的id，分类的名称
+    handleOpenEditDialog (cat) {
+      // cat 当前分类的对象
+      // console.log(cat.cat_name);
+      // console.log(this.form.cat_name);
+      this.form.cat_name = cat.cat_name;
+      // console.log(this.form.cat_name);
+      this.currentCatId = cat.cat_id;
+      this.editDialogFormVisible = true;
+    },
+    // 编辑对话框中的确定按钮
+    async handleEdit() {
+      const response = await this.$http.put(`categories/${this.currentCatId}`, {
+        cat_name: this.form.cat_name
+      });
+       // 判断修改是否成功
+      const { meta: { status, msg } } = response.data;
+      if (status === 200) {
+        this.$message.success(msg);
+        this.editDialogFormVisible = false;
+        this.loadData();
+      } else {
+        this.$message.error(msg);
+      }
     }
   }
 };
