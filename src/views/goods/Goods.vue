@@ -6,7 +6,7 @@
       <el-button slot="append" icon="el-icon-search"></el-button>
     </el-input>
     <!-- 按钮 -->
-    <el-button type="success" plain>添加分类</el-button>
+    <el-button @click="$router.push('/goods/add')" type="success" plain>添加商品</el-button>
     <el-table
       :data="data"
       height="500px"
