@@ -42,7 +42,16 @@
             <el-input v-model="form.goods_number"></el-input>
           </el-form-item>
           <el-form-item label="商品分类">
-            <el-input v-model="form.name"></el-input>
+            <el-cascader
+              placeholder="请选择商品分类"
+              clearable
+              expand-trigger="hover"
+              :options="options"
+              :props="{ label: 'cat_name', value: 'cat_id', children: 'children' }"
+              v-model="selectedOptions"
+              @change="handleChange">
+            </el-cascader>
+            <!-- <el-input v-model="form.name"></el-input> -->
           </el-form-item>
         </el-tab-pane>
         <el-tab-pane label="商品参数">商品参数</el-tab-pane>
@@ -55,6 +64,9 @@
 </template>
 <script>
 export default {
+  created () {
+    this.loadOptions();
+  },
   data () {
     return {
        active: 0,
@@ -66,12 +78,28 @@ export default {
         goods_price: '',
         goods_number: '',
         goods_weight: ''
-      }
+      },
+      selectedOptions: [],
+      options: []
     }
   },
   methods: {
-    handleTabClick (){
-
+    handleTabClick (tab,event) {
+      // console.log(tab);
+      // console.log(event);
+      this.active = tab.index - 0;
+    },
+    handleChange () {
+      if (this.selectedOptions.length !== 3) {
+        this.$message.warning('请选择3级分类')
+        // 清空多级下拉中的内容
+        this.selectedOptions.length = 0;
+      }
+    },
+    // 加载多级下拉的数据
+    async loadOptions() {
+      const response = await this.$http.get('categories?type=3');
+      this.options = response.data.data;
     }
   }
 };
