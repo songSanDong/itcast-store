@@ -85,9 +85,14 @@ export default {
   },
   methods: {
     handleTabClick (tab,event) {
-      // console.log(tab);
-      // console.log(event);
+      console.log(tab);
+      console.log(event);
       this.active = tab.index - 0;
+      if (tab.index === '1' || tab.index === '2') {
+        if(this.selectedOptions.length !== 3) {
+          this.$message.warning('请选择商品分类')
+        }
+      }
     },
     handleChange () {
       if (this.selectedOptions.length !== 3) {
