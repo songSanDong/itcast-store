@@ -1,18 +1,19 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Login from '../views/Login.vue';
-import Home from '../views/Home.vue';
-import Users from '../views/users/users.vue';
-import Rights from '../views/Rignt/rights.vue';
-import Roles from '../views/Rignt/Roles.vue';
-import Categories from '../views/goods/categories.vue';
-import Goods from '../views/goods/Goods.vue';
-import GoodsAdd from '../views/goods/GoodsAdd.vue';
-import Params from '../views/goods/Params.vue';
-import Orders from '../views/Orders/Orders.vue';
-import Reports from '../views/reports/reports.vue';
 // 导入message
 import { Message } from 'element-ui';
+const Login = () => import('../views/Login.vue');
+const Home = () => import('../views/Home.vue');
+const Users = () => import('../views/users/users.vue');
+const Rights = () => import('../views/Rignt/rights.vue');
+const Roles = () => import('../views/Rignt/Roles.vue');
+const Categories = () => import('../views/goods/categories.vue');
+const Goods = () => import('../views/goods/Goods.vue');
+const GoodsAdd = () => import('../views/goods/GoodsAdd.vue');
+const Params = () => import('../views/goods/Params.vue');
+const Orders = () => import('../views/Orders/Orders.vue');
+const Reports = () => import('../views/reports/reports.vue');
+
 // 配置路由规则
 Vue.use(Router);
 const router = new Router({

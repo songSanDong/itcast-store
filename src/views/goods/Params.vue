@@ -102,7 +102,7 @@ export default {
       data: []
     };
   },
-   created() {
+  created () {
     this.loadOptions();
   },
   methods: {

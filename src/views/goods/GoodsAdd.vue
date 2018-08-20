@@ -89,7 +89,7 @@ export default {
   },
   data () {
     return {
-       active: 0,
+      active: 0,
       // 表单数据
       form: {
         goods_name: '',
@@ -106,16 +106,16 @@ export default {
       dynamicParams: [],
       // 静态参数
       staticParams: []
-    }
+    };
   },
   methods: {
-    handleTabClick (tab,event) {
-      console.log(tab);
-      console.log(event);
+    handleTabClick (tab, event) {
+      // console.log(tab);
+      // console.log(event);
       this.active = tab.index - 0;
       if (tab.index === '1' || tab.index === '2') {
-        if(this.selectedOptions.length !== 3) {
-          this.$message.warning('请选择商品分类')
+        if (this.selectedOptions.length !== 3) {
+          this.$message.warning('请选择商品分类');
         } else {
           // 加载商品分类的参数列表
           this.loadParams();
@@ -140,7 +140,7 @@ export default {
       console.log(dynamicParams);
       this.dynamicParams.map((item) => {
         // 给对象新加一个属性
-      item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+        item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
       });
     }
   }

@@ -96,7 +96,7 @@ export default {
       pagenum: 1,
       pagesize: 10,
       total: 0
-    }
+    };
   },
   created () {
     this.loadData();

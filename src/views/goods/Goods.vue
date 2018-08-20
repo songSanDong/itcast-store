@@ -77,7 +77,7 @@ export default {
       pagenum: 1,
       pagesize: 6,
       total: 0
-    }
+    };
   },
   created () {
     this.loadData();

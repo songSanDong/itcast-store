@@ -223,7 +223,7 @@ export default {
     },
     // 删除分类
     handleDelete (id) {
-      this.$confirm('是否要删除该分类 ?','提示', {
+      this.$confirm('是否要删除该分类?','提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

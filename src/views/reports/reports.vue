@@ -15,7 +15,7 @@ export default {
       const response = await this.$http.get('reports/type/1');
       // 从服务器获取数据
       let option = response.data.data;
-       const data = {
+      const data = {
         title: {
           text: '用户来源'
         },
@@ -34,9 +34,9 @@ export default {
           }
         }
       };
-       option = { ...data, ...option };
-       option.xAxis[0].boundaryGap = false;
-       // 初始化echarts
+      option = { ...data, ...option };
+      option.xAxis[0].boundaryGap = false;
+      // 初始化echarts
       const myChart = echarts.init(this.$refs.chart);
 
       myChart.setOption(option);
