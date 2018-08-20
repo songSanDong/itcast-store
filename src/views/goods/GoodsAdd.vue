@@ -54,8 +54,28 @@
             <!-- <el-input v-model="form.name"></el-input> -->
           </el-form-item>
         </el-tab-pane>
-        <el-tab-pane label="商品参数">商品参数</el-tab-pane>
-        <el-tab-pane label="商品属性">商品属性</el-tab-pane>
+        <el-tab-pane label="商品参数">
+          <el-form-item
+            v-for="item in dynamicParams"
+            :key="item.attr_id"
+            :label="item.attr_name">
+            <el-checkbox
+              checked
+              v-for="param in item.params"
+              :key="param"
+              border
+              :label="param">
+            </el-checkbox>
+          </el-form-item>
+        </el-tab-pane>
+         <el-tab-pane label="商品属性">
+          <el-form-item
+            v-for="item in staticParams"
+            :key="item.attr_id"
+            :label="item.attr_name">
+            <el-input v-model="item.attr_vals"></el-input>
+          </el-form-item>
+        </el-tab-pane>
         <el-tab-pane label="商品图片">商品图片</el-tab-pane>
         <el-tab-pane label="商品内容">商品内容</el-tab-pane>
       </el-tabs>
@@ -80,7 +100,12 @@ export default {
         goods_weight: ''
       },
       selectedOptions: [],
-      options: []
+      options: [],
+      selectedOptions: [],
+      // 动态参数
+      dynamicParams: [],
+      // 静态参数
+      staticParams: []
     }
   },
   methods: {
@@ -91,6 +116,9 @@ export default {
       if (tab.index === '1' || tab.index === '2') {
         if(this.selectedOptions.length !== 3) {
           this.$message.warning('请选择商品分类')
+        } else {
+          // 加载商品分类的参数列表
+          this.loadParams();
         }
       }
     },
@@ -105,6 +133,15 @@ export default {
     async loadOptions() {
       const response = await this.$http.get('categories?type=3');
       this.options = response.data.data;
+    },
+    async loadParams () {
+      const response = await this.$http.get(`categories/${this.selectedOptions[2]}/attributes?sel=many`);
+      this.dynamicParams = response.data.data;
+      console.log(dynamicParams);
+      this.dynamicParams.map((item) => {
+        // 给对象新加一个属性
+      item.params = item.attr_vals.length === 0 ? [] : item.attr_vals.split(',');
+      });
     }
   }
 };

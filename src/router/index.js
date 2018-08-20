@@ -8,6 +8,9 @@ import Roles from '../views/Rignt/Roles.vue';
 import Categories from '../views/goods/categories.vue';
 import Goods from '../views/goods/Goods.vue';
 import GoodsAdd from '../views/goods/GoodsAdd.vue';
+import Params from '../views/goods/Params.vue';
+import Orders from '../views/Orders/Orders.vue';
+import Reports from '../views/reports/reports.vue';
 // 导入message
 import { Message } from 'element-ui';
 // 配置路由规则
@@ -25,7 +28,10 @@ const router = new Router({
         { name: 'roles', path: '/roles', component: Roles },
         { name: 'categories', path: '/categories', component: Categories },
         { name: 'goods', path: '/goods', component: Goods },
-        { name: 'goodsAdd', path: '/goods/add', component: GoodsAdd }
+        { name: 'goodsAdd', path: '/goods/add', component: GoodsAdd },
+        { name: 'Params', path: '/Params', component: Params },
+        { name: 'orders', path: '/orders', component: Orders },
+        { name: 'reports', path: '/reports', component: Reports }
       ]
     }
   ]
